@@ -13,7 +13,6 @@ const Home = ({ data, dataPromises }) => {
   console.log(addressMappings.rinkeby);
   //ALTERNATIVE
   const [priceData, setPriceData] = useState();
-  // const [newPrice, setNewPrice] = useState(0);
 
   console.log("Contract", ChainlinkPriceFeed);
   console.log("Data", data, dataPromises);
@@ -85,7 +84,12 @@ const Home = ({ data, dataPromises }) => {
 
   const renderCard = (details) => {
     return (
-      <a href="" target="_blank" className={styles.card} key={details.address}>
+      <a
+        href="https://github.com/DeveloperAlly"
+        target="_blank"
+        className={styles.card}
+        key={details.address}
+      >
         <h2>{details.description || details.name}</h2>
         {/* <p>{details.address}</p> */}
         <h3>{details.price / `1e${details.decimals}` || details.price}</h3>
