@@ -8,14 +8,15 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 // import useInterval from "./api/useInterval";
 
-const Home = ({ data, dataPromises }) => {
-  console.log("web3", web3.eth);
-  console.log(addressMappings.rinkeby);
-  //ALTERNATIVE
+const Home = ({ data }) => {
+  // console.log("web3", web3.eth);
+  // console.log(addressMappings.rinkeby);
+
+  //ALTERNATIVE TO Using Next getInitialProps function
   const [priceData, setPriceData] = useState();
 
-  console.log("Contract", ChainlinkPriceFeed);
-  console.log("Data", data, dataPromises);
+  // console.log("Contract", ChainlinkPriceFeed);
+  console.log("Data", data);
 
   //Update data using Next if youre using getInitialProps ->
   const router = useRouter();
@@ -28,43 +29,44 @@ const Home = ({ data, dataPromises }) => {
   //   getPrices();
   // }, REFRESH_INTERVAL);
 
-  //update data with client
-  useEffect(() => {
-    const prices = getAllPrices();
-  }, []);
+  // ALTERNATIVE TO Using Next getInitialProps function
+  // useEffect(() => {
+  //   getAllPrices();
+  // }, []);
 
-  //Update dat
-  const getAllPrices = async () => {
-    const dataPromises = addressMappings.rinkeby.map(async (asset) => {
-      try {
-        let info = await ChainlinkPriceFeed.methods
-          .getLatestPrice(asset.address)
-          .call();
-        let { decimals, price, description, roundID } = info;
-        return {
-          ...asset,
-          decimals,
-          price,
-          roundID,
-          description,
-          error: false,
-        };
-      } catch {
-        return { ...asset, price: "Unknown", error: true };
-      }
-    });
+  // //Update data
+  // const getAllPrices = async () => {
+  //   const dataPromises = addressMappings.rinkeby.map(async (asset) => {
+  //     try {
+  //       let info = await ChainlinkPriceFeed.methods
+  //         .getLatestPrice(asset.address)
+  //         .call();
+  //       let { decimals, price, description, roundID } = info;
+  //       return {
+  //         ...asset,
+  //         decimals,
+  //         price,
+  //         roundID,
+  //         description,
+  //         error: false,
+  //       };
+  //     } catch {
+  //       return { ...asset, price: "Unknown", error: true };
+  //     }
+  //   });
 
-    const data = await Promise.allSettled(dataPromises).then(
-      (resolvedPromises) => {
-        return resolvedPromises.map((promise) => {
-          return promise.value;
-        });
-      }
-    );
-    console.log(data);
-    setPriceData(data);
-  };
+  //   const data = await Promise.allSettled(dataPromises).then(
+  //     (resolvedPromises) => {
+  //       return resolvedPromises.map((promise) => {
+  //         return promise.value;
+  //       });
+  //     }
+  //   );
+  //   console.log("allprices", data);
+  //   setPriceData(data);
+  // };
 
+  //TEST getting a price from the contract
   // const getAPrice = async (assetAddress) => {
   //   await ChainlinkPriceFeed.methods
   //     .getLatestPrice(assetAddress)
@@ -123,7 +125,9 @@ const Home = ({ data, dataPromises }) => {
         <div className={styles.grid}>
           {data
             ? data.map((details) => renderCard(details))
-            : priceData && priceData.map((details) => renderCard(details))}
+            : priceData
+            ? priceData.map((details) => renderCard(details))
+            : "Loading..."}
         </div>
       </main>
 
@@ -142,101 +146,39 @@ const Home = ({ data, dataPromises }) => {
             />
           </span>
         </a>
-        {/* <button
-          onClick={() =>
-            // getAPrice("0xECe365B379E1dD183B20fc5f022230C044d51404")
-            refreshData()
-          }
-        >
-          Refresh Data
-        </button>
-        <div>{newPrice ? newPrice : "loading"}</div> */}
       </footer>
     </div>
   );
 };
 
-// Home.getInitialProps = async () => {
-//   const dataPromises = addressMappings.rinkeby.map(async (asset) => {
-//     try {
-//       let info = await ChainlinkPriceFeed.methods
-//         .getLatestPrice(asset.address)
-//         .call();
-//       let { decimals, price, description, roundID } = info;
-//       return {
-//         ...asset,
-//         decimals,
-//         price,
-//         roundID,
-//         description,
-//         error: false,
-//       };
-//     } catch {
-//       return { ...asset, price: "Unknown", error: true };
-//     }
-//   });
-
-//   const data = await Promise.allSettled(dataPromises).then(
-//     (resolvedPromises) => {
-//       return resolvedPromises.map((promise) => {
-//         return promise.value;
-//       });
-//     }
-//   );
-//   // const data = resolvedPromises.map
-//   // .then((results) => {
-//   //   return results;
-//   // })
-//   // .catch((err) => console.log("err", err));
-//   // const audusd = await ChainlinkPriceFeed.methods
-//   //   .getLatestPrice("0x21c095d2aDa464A294956eA058077F14F66535af")
-//   //   .call();
-//   // const btcusd = await ChainlinkPriceFeed.methods
-//   //   .getLatestPrice("0xECe365B379E1dD183B20fc5f022230C044d51404")
-//   //   .call();
-//   // const linkusd = await ChainlinkPriceFeed.methods
-//   //   .getLatestPrice("0xd8bD0a1cB028a31AA859A21A3758685a95dE4623")
-//   //   .call();
-//   // const ethusd = await ChainlinkPriceFeed.methods
-//   //   .getLatestPrice("0x8A753747A1Fa494EC906cE90E9f37563A8AF630e")
-//   //   .call();
-//   // return {
-//   //   data: { ethusd, btcusd, audusd, linkusd },
-//   //   mappings: addressMappings.rinkeby,
-//   // };
-//   return { data };
-// };
-
-export default Home;
-
-/*
 Home.getInitialProps = async () => {
-  const dataPromises = await Promise.allSettled(
-    addressMappings.rinkeby.map(async (asset) => {
-      return await ChainlinkPriceFeed.methods
+  const dataPromises = addressMappings.rinkeby.map(async (asset) => {
+    try {
+      let info = await ChainlinkPriceFeed.methods
         .getLatestPrice(asset.address)
-        .call()
-        .then(({ decimals, price, roundID, description }) => {
-          return {
-            ...asset,
-            decimals,
-            price,
-            roundID,
-            description,
-            error: false,
-          };
-        })
-        .catch((err) => {
-          console.log("error");
-          return { ...asset, price: "Unknown", error: true };
-        });
-    })
+        .call();
+      let { decimals, price, description, roundID } = info;
+      return {
+        ...asset,
+        decimals,
+        price,
+        roundID,
+        description,
+        error: false,
+      };
+    } catch {
+      return { ...asset, price: "Unknown", error: true };
+    }
+  });
+
+  const data = await Promise.allSettled(dataPromises).then(
+    (resolvedPromises) => {
+      return resolvedPromises.map((promise) => {
+        return promise.value;
+      });
+    }
   );
-  // const data = await Promise.allSettled(dataPromises)
-  //   .then((results) => {
-  //     return results;
-  //   })
-  //   .catch((err) => console.log("err", err));
+  //EXAMPLES
   // const audusd = await ChainlinkPriceFeed.methods
   //   .getLatestPrice("0x21c095d2aDa464A294956eA058077F14F66535af")
   //   .call();
@@ -253,7 +195,7 @@ Home.getInitialProps = async () => {
   //   data: { ethusd, btcusd, audusd, linkusd },
   //   mappings: addressMappings.rinkeby,
   // };
-  return { dataPromises };
+  return { data };
 };
 
-*/
+export default Home;
