@@ -1,3 +1,48 @@
+# Price-feed App
+
+![image (3)](https://user-images.githubusercontent.com/12529822/125950175-543ccd79-9a2f-4459-9eca-91f34e8c4235.png)
+
+## Details
+This app builds and deploys a solidity contract based on Chainlink Price Feeds then displays this data on a NextJS react frontend.
+
+
+## **Framework**
+
+**Contracts**: [Truffle](https://www.trufflesuite.com/truffle), Solidity, Infura, [Metamask](https://docs.metamask.io/guide/), [Chainlink](https://docs.chain.link/docs) for Price Feeds
+
+**Front-end**: React, [Next](https://nextjs.org/) (routing, SSR), [Web3](https://web3js.readthedocs.io/en/v1.3.4/).
+
+**Other npm libs**: @truffle/hdwallet-provider, dotenv
+
+## **Requirements/Dependencies**
+[Node js](https://nodejs.org/en/). 
+
+[Infura Account](https://infura.io/register) => [Set up guide](https://blog.infura.io/getting-started-with-infura-28e41844cc89/). 
+
+[Metamask Wallet](https://metamask.io/) => NB: USE A FRESH WALLET WITH NO REAL VALUABLE ASSETS ON IT (test only) AND KEEP YOUR SEED PHRASE HANDY (we need this to deploy the solidity contracts). 
+
+[Truffle](https://www.trufflesuite.com/truffle) => install using npm command. 
+
+> npm install -g truffle
+
+## **Running the App**
+
+1. Clone the repo `git clone `
+2. Create a .env file `> touch .env`
+3. Fill in the .env file with the Infura address and the Metamask seed phrase (as per the .example.env file)
+4. Install dependencies `npm install`
+5. Deploy the contracts `truffle migrate --network rinkeby`
+6. Add the deployed contracts address to the .env file
+7. Run the front-end `npm run dev`
+8. Navigate to [http://localhost:3000](http://localhost:3000/) to see the price feed app in action
+
+
+
+
+
+
+## See the Next-js docs below
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
