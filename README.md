@@ -27,7 +27,7 @@ This app builds and deploys a solidity contract based on Chainlink Price Feeds t
 
 ## **Running the App**
 
-1. Clone the repo `git clone `
+1. Clone the repo `git clone https://github.com/DeveloperAlly/brisjs.git`
 2. Create a .env file `> touch .env`
 3. Fill in the .env file with the Infura address and the Metamask seed phrase (as per the .example.env file)
 4. Install dependencies `npm install`
